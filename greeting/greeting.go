@@ -6,6 +6,7 @@ type inc func(digit int) int
 
 type stringy func() string
 
+type Salutations []Salutation
 type Printer func(string)
 
 type Salutation struct {
@@ -13,10 +14,10 @@ type Salutation struct {
 	Greeting string
 }
 
-func Greet(salutation []Salutation, do Printer, isFormal bool) {
-	for _, s := range salutation {
+func (salutations Salutations) Greet(do Printer, isFormal bool) {
+	for _, s := range salutations {
 		message, alternate := CreateMessage(s.Name, s.Greeting)
-		if prefix := "Hello "; isFormal {
+		if prefix := GetPrefix(s.Name); isFormal {
 			do(prefix + s.Name + ", " + message)
 		} else {
 			do(alternate)
@@ -24,6 +25,17 @@ func Greet(salutation []Salutation, do Printer, isFormal bool) {
 	}
 }
 
+func GetPrefix(s string) (prefix string) {
+	var prefixMap = map[string]string{
+		"Marcio": "Mr. ",
+		"Bob":    "Mr. ",
+		"Joe":    "Dr. ",
+		"Mary":   "Mrs. ",
+		"John":   "Dr. ",
+	}
+	prefix = prefixMap[s]
+	return
+}
 func CreateMessage(name string, greeting string) (message string, alternate string) {
 	// message = greeting + " " + name + ", welcome to go programming "
 	message = "welcome to go programming "

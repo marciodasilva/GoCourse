@@ -16,7 +16,7 @@ func main() {
 	fmt.Println("---------------------------------------")
 	//---------------------------------------
 
-	var greet = []greeting.Salutation{
+	salutations := greeting.Salutations{
 		{"Marcio", "Yo"},
 		{"Bob", "Hello"},
 		{"Joe", "Hi"},
@@ -26,7 +26,7 @@ func main() {
 	//_, _ = createMessage(greet.name, greet.greeting)
 	//var prn = Print("Hi, ")
 	prn := greeting.CreatePrintFunction("|:=)")
-	greeting.Greet(greet, prn, true)
+	salutations.Greet(prn, true)
 	//Greet(greet, prn)
 	//fmt.Println(createMessage(greet.name,greet.greeting)
 }
