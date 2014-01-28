@@ -13,18 +13,20 @@ type Salutation struct {
 	Greeting string
 }
 
-func Greet(salutation Salutation, do Printer, isFormal bool) {
-	message, alternate := CreateMessage(salutation.Name, salutation.Greeting)
-	//fmt.Println(message + ", " + alternate)
-	if prefix := "Mr."; isFormal {
-		do(prefix + message)
-	} else {
-		do(alternate)
+func Greet(salutation []Salutation, do Printer, isFormal bool) {
+	for _, s := range salutation {
+		message, alternate := CreateMessage(s.Name, s.Greeting)
+		if prefix := "Hello "; isFormal {
+			do(prefix + s.Name + ", " + message)
+		} else {
+			do(alternate)
+		}
 	}
 }
 
 func CreateMessage(name string, greeting string) (message string, alternate string) {
-	message = "Hi, " + name
+	// message = greeting + " " + name + ", welcome to go programming "
+	message = "welcome to go programming "
 	alternate = greeting
 	return
 }
