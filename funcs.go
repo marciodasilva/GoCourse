@@ -2,6 +2,7 @@ package main
 
 import (
 	"./greeting"
+	"./sql"
 	"fmt"
 )
 
@@ -29,4 +30,8 @@ func main() {
 	salutations.Greet(prn, true)
 	//Greet(greet, prn)
 	//fmt.Println(createMessage(greet.name,greet.greeting)
+	// db.DBExec()
+	db.DBInsert()
+	// db.DBDelete()
+	db.DBUpdate()
 }
