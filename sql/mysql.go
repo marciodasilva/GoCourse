@@ -8,6 +8,11 @@ import (
 
 var db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
 
+func DBPing() {
+	err = db.Ping()
+	panicIf(err)
+}
+
 func panicIf(err error) {
 	if err != nil {
 		panic(err)

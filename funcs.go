@@ -30,6 +30,7 @@ func main() {
 	salutations.Greet(prn, true)
 	//Greet(greet, prn)
 	//fmt.Println(createMessage(greet.name,greet.greeting)
+	db.DBPing()
 	// db.DBExec()
 	db.DBInsert()
 	// db.DBDelete()
