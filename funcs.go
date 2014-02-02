@@ -31,8 +31,8 @@ func main() {
 	//Greet(greet, prn)
 	//fmt.Println(createMessage(greet.name,greet.greeting)
 	db.DBPing()
+	// db.DBDelete("Panda")
+	// db.DBInsert("Bella")
+	db.DBUpdate("Bella", "Panda")
 	// db.DBExec()
-	db.DBInsert()
-	// db.DBDelete()
-	db.DBUpdate()
 }

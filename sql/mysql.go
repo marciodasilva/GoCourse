@@ -2,13 +2,13 @@ package db
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
-
 func DBPing() {
+	var db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
 	err = db.Ping()
 	panicIf(err)
 }
@@ -19,38 +19,55 @@ func panicIf(err error) {
 	}
 }
 
-func DBUpdate() {
-	newValue := "Panda"
-	oldValue := "Bella"
+func DBUpdate(oldValue string, newValue string) (res sql.Result) {
+	var db, _ = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
+	// var tx, txerr = db.Begin()
 	stmDel, err := db.Prepare("UPDATE task SET label=?  WHERE label=?")
 	panicIf(err)
-	_, err = stmDel.Exec(newValue, oldValue)
-	panicIf(err)
+	res, err = stmDel.Exec(newValue, oldValue)
+	var count, errR = res.RowsAffected()
+	if errR != nil {
+		fmt.Println("res.RowAffected() returned error: %s", errR.Error())
+	}
+	if count != 0 {
+		fmt.Println("Expected 0 affected row, go %d", count)
+	}
+	// defer tx.Rollback()
+	return res
 }
 
-func DBDelete() {
-	value := "Bella"
-	stmIns, err := db.Prepare("DELETE FROM task WHERE label =? ")
+func DBDelete(delLabel string) (res sql.Result) {
+	if len(delLabel) == 0 {
+		err := errors.New("Misssing parameter ...!")
+		panicIf(err)
+	}
+	// Open database connection
+	var db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
+	stmIns, err := db.Prepare("DELETE FROM task WHERE label =?")
 	panicIf(err)
 
-	_, err = stmIns.Exec(value)
+	res, err = stmIns.Exec(delLabel)
 	panicIf(err)
+	return res
 }
 
-func DBInsert() {
-	value := "Bella"
+func DBInsert(insValue string) (res sql.Result) {
+	value := insValue
+	// Open database connection
+	var db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
 	stmIns, err := db.Prepare("INSERT INTO task set label =? ")
 	panicIf(err)
 
-	_, err = stmIns.Exec(value)
+	res, err = stmIns.Exec(value)
 	panicIf(err)
 
 	defer stmIns.Close()
+	return res
 }
 
 func DBExec() {
 	// Open database connection
-	// db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
+	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
 	if err != nil {
 		panic(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
 	}
