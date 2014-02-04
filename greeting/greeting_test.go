@@ -14,7 +14,7 @@ func Test(t *testing.T) {
 	// want := "Dr. "
 	for k, _ := range prefixMap {
 		ret := GetPrefix(k)
-		if ret != "Mr. " && ret != "Mrs. " {
+		if ret != "Mr. " && ret != "Mrs. " && ret != "Dr. " {
 			t.Errorf("GetPrefix(%q) == %q", k, ret)
 		}
 	}

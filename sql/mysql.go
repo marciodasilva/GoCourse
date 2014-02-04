@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"log"
 )
 
 func DBPing() {
@@ -117,5 +118,34 @@ func DBExec() {
 			fmt.Println(columns[i], ": ", value)
 		}
 		fmt.Println("-----------------------------------")
+	}
+}
+func DBSimpleExec() {
+	var (
+		id    int
+		label string
+	)
+	// Open database connection
+	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+	rows, err := db.Query("SELECT * FROM task")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Total # of rows is %s\n", rows)
+	defer rows.Close()
+	for rows.Next() {
+		err := rows.Scan(&id, &label)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Printf("The id is %d and name is %s\n", id, label)
+	}
+	err = rows.Err()
+	if err != nil {
+		log.Fatal(err)
 	}
 }

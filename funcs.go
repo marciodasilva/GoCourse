@@ -24,7 +24,7 @@ func main() {
 		{"Mary", "What is up?"},
 		{"John", "Too late"},
 	}
-	//_, _ = createMessage(greet.name, greet.greeting)
+	// _, _ = createMessage(greet.name, greet.greeting)
 	//var prn = Print("Hi, ")
 	prn := greeting.CreatePrintFunction("|:=)")
 	salutations.Greet(prn, true)
@@ -35,4 +35,5 @@ func main() {
 	// db.DBInsert("Bella")
 	db.DBUpdate("Bella", "Panda")
 	// db.DBExec()
+	db.DBSimpleExec()
 }
