@@ -2,11 +2,35 @@ package db
 
 import (
 	"database/sql"
+	// "database/sql/driver"
+	// "encoding/json"
 	"errors"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 )
+
+type Task struct {
+	id      int
+	name    string
+	address []Address
+	vehicle []Vehicle
+}
+type Address struct {
+	id      int
+	user_id int
+	street  string
+	city    string
+	zip     string
+	state   string
+}
+
+type Vehicle struct {
+	id      int
+	user_id int
+	make    string
+	year    string
+}
 
 func DBPing() {
 	var db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
@@ -23,7 +47,7 @@ func panicIf(err error) {
 func DBUpdate(oldValue string, newValue string) (res sql.Result) {
 	var db, _ = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
 	// var tx, txerr = db.Begin()
-	stmDel, err := db.Prepare("UPDATE task SET label=?  WHERE label=?")
+	stmDel, err := db.Prepare("UPDATE task SET name=?  WHERE name=?")
 	panicIf(err)
 	res, err = stmDel.Exec(newValue, oldValue)
 	var count, errR = res.RowsAffected()
@@ -44,7 +68,7 @@ func DBDelete(delLabel string) (res sql.Result) {
 	}
 	// Open database connection
 	var db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
-	stmIns, err := db.Prepare("DELETE FROM task WHERE label =?")
+	stmIns, err := db.Prepare("DELETE FROM task WHERE name =?")
 	panicIf(err)
 
 	res, err = stmIns.Exec(delLabel)
@@ -56,7 +80,7 @@ func DBInsert(insValue string) (res sql.Result) {
 	value := insValue
 	// Open database connection
 	var db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
-	stmIns, err := db.Prepare("INSERT INTO task set label =? ")
+	stmIns, err := db.Prepare("INSERT INTO task set name =? ")
 	panicIf(err)
 
 	res, err = stmIns.Exec(value)
@@ -122,30 +146,71 @@ func DBExec() {
 }
 func DBSimpleExec() {
 	var (
-		id    int
-		label string
+		id      int
+		name    string
+		street  string
+		city    string
+		zip     string
+		state   string
+		user_id int
+		make    string
 	)
+	rows, err := runExec()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err := rows.Scan(&id, &name, &street, &city, &zip, &state, &user_id, &make)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Printf("The id is %d and name is %s, street: %s and car make model: %s\n", id, name, street, make)
+	}
+	err = rows.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func runExec() (*sql.Rows, error) {
+
 	// Open database connection
 	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test")
 	if err != nil {
 		panic(err.Error())
 	}
 	defer db.Close()
-	rows, err := db.Query("SELECT * FROM task")
+	// rows, err := db.Query("SELECT * FROM task")
+	rows, err := db.Query("SELECT task.id, task.name, address.street, address.city, address.zip, address.state, vehicle.`user_id`, vehicle.make FROM task join address ON task.id = address.`user_id` join vehicle ON address.`user_id` = vehicle.`user_id`")
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Total # of rows is %s\n", rows)
+	return rows, err
+}
+func DBJson() string {
+	var (
+		id      int
+		name    string
+		street  string
+		city    string
+		zip     string
+		state   string
+		user_id int
+		make    string
+	)
+	rows, err := runExec()
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer rows.Close()
 	for rows.Next() {
-		err := rows.Scan(&id, &label)
+		err := rows.Scan(&id, &name, &street, &city, &zip, &state, &user_id, &make)
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("The id is %d and name is %s\n", id, label)
+		log.Printf("The id is %d and name is %s, street: %s and car make model: %s\n", id, name, street, make)
 	}
-	err = rows.Err()
-	if err != nil {
-		log.Fatal(err)
-	}
+	return ""
 }
