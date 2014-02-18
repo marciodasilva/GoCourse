@@ -38,17 +38,20 @@ func main() {
 	//Greet(greet, prn)
 	//fmt.Println(createMessage(greet.name,greet.greeting)
 
-	fmt.Println("-----------Starting DataBase transaction logic-----------------")
+	// fmt.Println("-----------Starting DataBase transaction logic-----------------")
 	db.DBPing()
-	db.DBDelete("Panda")
-	db.DBInsert("Bella")
-	db.DBUpdate("Bella", "Panda")
-	db.DBExec()
-	db.DBSimpleExec()
+	// db.DBDelete("Panda")
+	// db.DBInsert("Bella")
+	// db.DBUpdate("Bella", "Panda")
+	// db.DBExec()
+	// db.DBSimpleExec()
+	//
+	// // Execute Json function to fetch the message.json file
+	// ws.Json("Hi")
+	// db.DBJson()
+	// // Run Martini Server
+	// m.Run()
 
-	// Execute Json function to fetch the message.json file
-	ws.Json("Hi")
-	db.DBJson()
-	// Run Martini Server
-	m.Run()
+	fmt.Println("-----------Printing JSON message-----------------")
+	ws.Responses()
 }
