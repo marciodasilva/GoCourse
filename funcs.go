@@ -52,6 +52,9 @@ func main() {
 	// // Run Martini Server
 	// m.Run()
 
-	fmt.Println("-----------Printing JSON message-----------------")
-	ws.Responses()
+	// fmt.Println("-----------Printing JSON message-----------------")
+	// ws.Responses()
+
+	fmt.Println("-----------Fetch data into Customer Structe-----------------")
+	db.ToJSON()
 }

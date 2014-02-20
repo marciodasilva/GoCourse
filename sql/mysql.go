@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 	// "database/sql/driver"
-	// "encoding/json"
+	"encoding/json"
 	"errors"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
@@ -213,4 +213,71 @@ func DBJson() string {
 		log.Printf("The id is %d and name is %s, street: %s and car make model: %s\n", id, name, street, make)
 	}
 	return ""
+}
+
+// ------- using sql type -----------
+// type Customer struct {
+// 	id      int64
+// 	name    sql.NullString
+// 	street  sql.NullString
+// 	city    sql.NullString
+// 	zip     sql.NullString
+// 	state   sql.NullString
+// 	user_id int64
+// 	make    sql.NullString
+// }
+type Customer struct {
+	id      int64
+	name    string
+	street  string
+	city    string
+	zip     string
+	state   string
+	user_id int64
+	make    string
+}
+type Customers []Customer
+
+func (c *Customer) fetch(row *sql.Rows) error {
+	return row.Scan(&c.id,
+		&c.name,
+		&c.street,
+		&c.city,
+		&c.zip,
+		&c.state,
+		&c.user_id,
+		&c.make)
+}
+
+func ToJSON() {
+
+	rows, err := runExec()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	slc := make([]Customer, 0)
+	i := 1
+	for rows.Next() {
+		var c Customer
+		err := c.fetch(rows)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		cust := Customer{name: c.name, street: c.street,
+			city: c.city, zip: c.zip, state: c.state, make: c.make}
+
+		// cust := []Customer{string(c.id), c.name, c.street, c.city, c.zip, c.state, c.make}
+
+		slc = append(slc, cust)
+		// slc = append(slc, string(c.id), c.name, c.street, c.city, c.zip, c.state, c.make)
+		log.Printf("The id is %d and name is %s, street: %s and car make model: %s\n", c.id, c.name, c.street, c.make)
+		log.Printf("Slice head value is = %s\n\n", slc[i])
+		i++
+	}
+	slcRows, _ := json.Marshal(slc)
+	log.Printf(string(slcRows))
+
 }
