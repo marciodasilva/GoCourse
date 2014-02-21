@@ -11,10 +11,8 @@ import (
 )
 
 type Task struct {
-	id      int
-	name    string
-	address []Address
-	vehicle []Vehicle
+	id   int
+	name string
 }
 type Address struct {
 	id      int
@@ -182,7 +180,7 @@ func runExec() (*sql.Rows, error) {
 	}
 	defer db.Close()
 	// rows, err := db.Query("SELECT * FROM task")
-	rows, err := db.Query("SELECT task.id, task.name, address.street, address.city, address.zip, address.state, vehicle.`user_id`, vehicle.make FROM task join address ON task.id = address.`user_id` join vehicle ON address.`user_id` = vehicle.`user_id`")
+	rows, err := db.Query("SELECT task.id, task.name, address.street, address.city, address.zip, address.state, vehicle.`user_id`, vehicle.make FROM task join address ON task.id = address.`user_id` join vehicle ON address.`user_id` = vehicle.`user_id` ORDER BY task.id")
 
 	if err != nil {
 		log.Fatal(err)
@@ -227,57 +225,53 @@ func DBJson() string {
 // 	make    sql.NullString
 // }
 type Customer struct {
-	id      int64
-	name    string
-	street  string
-	city    string
-	zip     string
-	state   string
-	user_id int64
-	make    string
+	Id      int64
+	Name    string
+	Street  string
+	City    string
+	Zip     string
+	State   string
+	User_id int64
+	Make    string
 }
 type Customers []Customer
 
 func (c *Customer) fetch(row *sql.Rows) error {
-	return row.Scan(&c.id,
-		&c.name,
-		&c.street,
-		&c.city,
-		&c.zip,
-		&c.state,
-		&c.user_id,
-		&c.make)
+	return row.Scan(&c.Id,
+		&c.Name,
+		&c.Street,
+		&c.City,
+		&c.Zip,
+		&c.State,
+		&c.User_id,
+		&c.Make)
 }
 
 func ToJSON() {
-
 	rows, err := runExec()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
-
+	c := Customer{}
 	slc := make([]Customer, 0)
-	i := 1
+	// i := 1
 	for rows.Next() {
-		var c Customer
 		err := c.fetch(rows)
 		if err != nil {
 			log.Fatal(err)
 		}
+		cust := &Customer{Name: c.Name, Street: c.Street,
+			City: c.City, Zip: c.Zip, State: c.State, Make: c.Make}
+		// jcust, _ := json.Marshal(cust)
+		// log.Printf("Customer Data - id: %d and name: %s, street: %s and car make model: %s\n", c.Id, c.Name, c.Street, c.Make)
+		log.Printf("%d,%s,%s,%s,%s,%s,%s\n", c.Id, c.Name, c.Street, c.City, c.Zip, c.State, c.Make)
+		// log.Printf("Customer JSON info - %s", string(jcust))
 
-		cust := Customer{name: c.name, street: c.street,
-			city: c.city, zip: c.zip, state: c.state, make: c.make}
-
-		// cust := []Customer{string(c.id), c.name, c.street, c.city, c.zip, c.state, c.make}
-
-		slc = append(slc, cust)
-		// slc = append(slc, string(c.id), c.name, c.street, c.city, c.zip, c.state, c.make)
-		log.Printf("The id is %d and name is %s, street: %s and car make model: %s\n", c.id, c.name, c.street, c.make)
-		log.Printf("Slice head value is = %s\n\n", slc[i])
-		i++
+		slc = append(slc, *cust)
+		// i++
 	}
 	slcRows, _ := json.Marshal(slc)
-	log.Printf(string(slcRows))
+	log.Printf("JSON value = %s\n", string(slcRows))
 
 }

@@ -1,0 +1,146 @@
+[
+    {
+        "id": 0,
+        "name": "Peck Duran",
+        "street": "Chapel Street",
+        "city": "Orbin",
+        "zip": "94999",
+        "state": "Maine",
+        "email": "peckduran@orbin.com",
+        "phone": "+1 (859) 449-2319",
+        "friends": [
+            {
+                "id": 0,
+                "name": "Hendricks Vaughan"
+            },
+            {
+                "id": 1,
+                "name": "Yesenia Franks"
+            },
+            {
+                "id": 2,
+                "name": "Wilder Landry"
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "name": "Vilma Barrera",
+        "street": "Bayview Place",
+        "city": "Fleetmix",
+        "zip": "94999",
+        "state": "Washington",
+        "email": "vilmabarrera@fleetmix.com",
+        "phone": "+1 (884) 530-3876",
+        "friends": [
+            {
+                "id": 0,
+                "name": "Tisha Kline"
+            },
+            {
+                "id": 1,
+                "name": "Mccarthy Moreno"
+            },
+            {
+                "id": 2,
+                "name": "Neva Pennington"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Lindsay Fitzpatrick",
+        "street": "Moultrie Street",
+        "city": "Maximind",
+        "zip": "94999",
+        "state": "Maryland",
+        "email": "lindsayfitzpatrick@maximind.com",
+        "phone": "+1 (895) 407-2263",
+        "friends": [
+            {
+                "id": 0,
+                "name": "Ofelia Noel"
+            },
+            {
+                "id": 1,
+                "name": "Miles Floyd"
+            },
+            {
+                "id": 2,
+                "name": "Carly Rocha"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Vanessa Mclaughlin",
+        "street": "Ridgewood Place",
+        "city": "Speedbolt",
+        "zip": "94999",
+        "state": "Hawaii",
+        "email": "vanessamclaughlin@speedbolt.com",
+        "phone": "+1 (832) 452-2750",
+        "friends": [
+            {
+                "id": 0,
+                "name": "Snow Daniel"
+            },
+            {
+                "id": 1,
+                "name": "Buck Price"
+            },
+            {
+                "id": 2,
+                "name": "Karin Joseph"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Mcmahon Rosario",
+        "street": "Ryerson Street",
+        "city": "Mantrix",
+        "zip": "94999",
+        "state": "Iowa",
+        "email": "mcmahonrosario@mantrix.com",
+        "phone": "+1 (841) 482-3261",
+        "friends": [
+            {
+                "id": 0,
+                "name": "Puckett Maldonado"
+            },
+            {
+                "id": 1,
+                "name": "Cindy Bernard"
+            },
+            {
+                "id": 2,
+                "name": "Crawford Gray"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Durham Banks",
+        "street": "Stockholm Street",
+        "city": "Sloganaut",
+        "zip": "94999",
+        "state": "Arizona",
+        "email": "durhambanks@sloganaut.com",
+        "phone": "+1 (987) 414-3051",
+        "friends": [
+            {
+                "id": 0,
+                "name": "Sweet Valdez"
+            },
+            {
+                "id": 1,
+                "name": "Gilmore Pena"
+            },
+            {
+                "id": 2,
+                "name": "Kendra Christian"
+            }
+        ]
+    }
+]

@@ -1,0 +1,2 @@
+SELECT task.id, task.name, address.street, address.city, address.zip, address.state, vehicle.user_id, vehicle.make FROM task
+     join address ON task.id = address.`user_id` join vehicle ON address.`user_id` = vehicle.`user_id` order by task.id
